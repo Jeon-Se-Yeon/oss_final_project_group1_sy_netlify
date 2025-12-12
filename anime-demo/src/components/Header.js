@@ -7,6 +7,8 @@ const Header = ({ onReset }) => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
+    const LOGO_SRC = "/AnimeFinder_logo.jpg";
+
     return (
         <header style={styles.header}>
             <div style={styles.headerContent}>
@@ -18,10 +20,22 @@ const Header = ({ onReset }) => {
                             onReset();
                         }
                     }}
-                    style={{ textDecoration: "none", color: "#333" }}
+                    style={{ 
+                        textDecoration: "none", 
+                        color: "#333",
+                        display: "flex", 
+                        alignItems: "center", 
+                        gap: "10px" 
+                    }}
                 >
-                    <h1>🎬 Anime Finder</h1>
+                    <img 
+                        src={LOGO_SRC} 
+                        alt="Anime Finder Logo" 
+                        style={{ height: "40px", objectFit: "contain" }} 
+                    />
+                    <h1 style={{ margin: 0 }}>Anime Finder</h1>
                 </Link>
+
                 <div style={styles.authSection}>
                     {user ? (
                         <>
