@@ -184,6 +184,7 @@ const Home = () => {
                         </select>
                     </div>
                 </form>
+                
             </div>
 
             {loading ? (
