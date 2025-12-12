@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Header from "../components/Header";
 import ReviewSection from "../components/ReviewSection";
 import { styles } from "../styles";
@@ -7,7 +8,10 @@ import { styles } from "../styles";
 const Detail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user, updateUser } = useAuth();
     const [anime, setAnime] = useState(null);
+
+    const isFavorite = user?.favorite?.includes(id);
 
     useEffect(() => {
         fetch(`https://api.jikan.moe/v4/anime/${id}`)
@@ -15,7 +19,27 @@ const Detail = () => {
             .then((data) => setAnime(data.data));
     }, [id]);
 
-    if (!anime) return <div style={styles.centerText}>로딩 중... 🌀</div>;
+    const handleToggleFavorite = async () => {
+        if (!user) return alert("로그인이 필요합니다.");
+
+        const currentFavorites = user.favorite || [];
+        let newFavorites;
+
+        if (isFavorite) {
+            newFavorites = currentFavorites.filter((favId) => favId !== id);
+        } else {
+            newFavorites = [...currentFavorites, id];
+        }
+
+        const success = await updateUser({ favorite: newFavorites });
+        if (success) {
+            alert(isFavorite ? "찜 목록에서 삭제되었습니다." : "찜 목록에 추가되었습니다!");
+        } else {
+            alert("처리 중 오류가 발생했습니다.");
+        }
+    };
+
+    if (!anime) return <div style={styles.centerText}>로딩 중... </div>;
 
     return (
         <div style={styles.container}>
@@ -24,9 +48,25 @@ const Detail = () => {
                 ← 뒤로 가기
             </button>
             <div style={styles.detailCard}>
-                <div style={styles.detailHeader}>
-                    <h1>{anime.title}</h1>
-                    <p style={{ color: "#666" }}>{anime.title_japanese}</p>
+                <div style={{ ...styles.detailHeader, display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                    <div>
+                        <h1>{anime.title}</h1>
+                        <p style={{ color: "#666" }}>{anime.title_japanese}</p>
+                    </div>
+                    <button 
+                        onClick={handleToggleFavorite}
+                        style={{
+                            backgroundColor: "transparent",
+                            border: "none",
+                            fontSize: "2rem",
+                            cursor: "pointer",
+                            color: isFavorite ? "#ef4444" : "#ccc",
+                            transition: "color 0.2s"
+                        }}
+                        title={isFavorite ? "찜 취소" : "찜하기"}
+                    >
+                        {isFavorite ? "❤️" : "🤍"}
+                    </button>
                 </div>
                 <div style={styles.detailBody}>
                     <div style={styles.imageWrapper}>

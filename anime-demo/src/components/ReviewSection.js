@@ -1,21 +1,35 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
-import { REVIEW_API_URL } from "../constants";
+import { REVIEW_API_URL, USER_API_URL } from "../constants";
 import { styles } from "../styles";
 
 const ReviewSection = ({ animeId }) => {
     const { user } = useAuth();
     const [reviews, setReviews] = useState([]);
+    const [userImages, setUserImages] = useState({});
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
     const [rating, setRating] = useState(10);
 
+    const fetchUserImages = async () => {
+        try {
+            const res = await fetch(USER_API_URL);
+            const users = await res.json();
+            const imageMap = {};
+            users.forEach(u => {
+                imageMap[u.userid] = u.profileImage;
+            });
+            setUserImages(imageMap);
+        } catch (err) {
+            console.error("유저 이미지 로드 실패:", err);
+        }
+    };
+
     const fetchReviews = useCallback(async () => {
         try {
             const res = await fetch(REVIEW_API_URL);
             const data = await res.json();
-            // animeId가 문자열일 수도 있어 String()으로 변환하여 비교
             const filtered = data.filter(
                 (r) => String(r.animeId) === String(animeId)
             );
@@ -29,13 +43,13 @@ const ReviewSection = ({ animeId }) => {
 
     useEffect(() => {
         fetchReviews();
+        fetchUserImages();
     }, [fetchReviews]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!title || !contents) return alert("제목과 내용을 입력해주세요.");
         
-        // 리뷰 작성 시 중복 체크
         if (reviews.some(r => r.userid === user.userid)) {
             return alert("이미 이 애니메이션에 대한 리뷰를 작성하셨습니다.");
         }
@@ -59,7 +73,7 @@ const ReviewSection = ({ animeId }) => {
                 setTitle("");
                 setContents("");
                 setRating(10);
-                fetchReviews(); // 등록 후 목록 갱신
+                fetchReviews();
             } else alert("등록 실패");
         } catch (err) {
             console.error("리뷰 등록 오류:", err);
@@ -80,18 +94,13 @@ const ReviewSection = ({ animeId }) => {
             console.error("Delete Error:", error);
         }
     };
+
     const formatDate = (timestamp) =>
         new Date(timestamp * 1000).toLocaleDateString("ko-KR");
 
     return (
         <div style={styles.reviewContainer}>
-            <h2
-                style={{
-                    borderBottom: "2px solid #333",
-                    paddingBottom: "10px",
-                    marginBottom: "20px",
-                }}
-            >
+            <h2 style={{ borderBottom: "2px solid #333", paddingBottom: "10px", marginBottom: "20px" }}>
                 💬 유저 리뷰 ({reviews.length})
             </h2>
             {user ? (
@@ -147,7 +156,29 @@ const ReviewSection = ({ animeId }) => {
                                 <div
                                     style={{ display: "flex", alignItems: "center", gap: "10px" }}
                                 >
-                                    <span style={styles.reviewTitle}>{review.title}</span>
+                                    <div style={{
+                                        width: "32px", height: "32px", borderRadius: "50%", 
+                                        backgroundColor: "#eee", overflow: "hidden", 
+                                        display: "flex", alignItems: "center", justifyContent: "center",
+                                        border: "1px solid #ddd"
+                                    }}>
+                                        {userImages[review.userid] ? (
+                                            <img 
+                                                src={userImages[review.userid]} 
+                                                alt="profile" 
+                                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                                onError={(e) => {e.target.style.display='none'}}
+                                            />
+                                        ) : (
+                                            <span style={{ fontSize: "16px" }}>👤</span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <span style={{ fontSize: "14px", color: "#555", display: "block", lineHeight: "1" }}>
+                                            {review.userid}
+                                        </span>
+                                        <span style={styles.reviewTitle}>{review.title}</span>
+                                    </div>
                                     <span style={styles.reviewRating}>⭐ {review.rating}</span>
                                 </div>
                                 {user && user.userid === review.userid && (
@@ -161,9 +192,7 @@ const ReviewSection = ({ animeId }) => {
                             </div>
                             <p style={styles.reviewContent}>{review.contents}</p>
                             <div style={styles.reviewFooter}>
-                                <span>
-                                    작성자: <strong>{review.userid}</strong>
-                                </span>
+                                <span></span>
                                 <span>{formatDate(review.time)}</span>
                             </div>
                         </div>
