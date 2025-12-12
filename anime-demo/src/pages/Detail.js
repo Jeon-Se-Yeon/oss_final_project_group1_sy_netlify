@@ -78,7 +78,7 @@ const Detail = () => {
         }
     };
 
-    if (!anime) return <div style={styles.centerText}>로딩 중... 🌀</div>;
+    if (!anime) return <div style={styles.centerText}>로딩 중...</div>;
 
     return (
         <div style={styles.container}>
