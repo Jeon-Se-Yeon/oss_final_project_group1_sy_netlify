@@ -1,7 +1,7 @@
 // src/pages/Home.js
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, useSearchParams } from "react-router-dom"; // useSearchParams 추가
+import { Link, useSearchParams } from "react-router-dom";
 import Header from "../components/Header";
 import { GENRES, RATINGS } from "../constants";
 import { styles } from "../styles";
@@ -10,31 +10,25 @@ const Home = () => {
   const [animeList, setAnimeList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState(null);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // URL에서 현재 상태 값 읽어오기 (없으면 기본값 사용)
   const page = parseInt(searchParams.get("page") || "1", 10);
   const query = searchParams.get("q") || "";
   const genre = searchParams.get("genre") || "";
   const rating = searchParams.get("rating") || "";
   const sort = searchParams.get("sort") || "";
 
-  // 검색창 입력값은 타이핑 중에는 URL에 반영하지 않으므로 로컬 state 유지
   const [searchInput, setSearchInput] = useState(query);
   const [pageInput, setPageInput] = useState(page);
 
-  // 페이지가 URL에 따라 바뀔 때 인풋창 숫자도 동기화
   useEffect(() => {
     setPageInput(page);
   }, [page]);
 
-  // 검색창 초기값 동기화 (뒤로가기 시 검색어 유지)
   useEffect(() => {
     setSearchInput(query);
   }, [query]);
 
-  // API 호출 함수
   const fetchAnime = useCallback(
     async () => {
       setLoading(true);
