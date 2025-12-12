@@ -151,6 +151,16 @@ export const styles = {
     fontSize: "13px",
     fontWeight: "600",
   },
+  loginMessage: {
+    textAlign: "center",
+    padding: "40px",
+    backgroundColor: "#f8fafc",
+    borderRadius: "12px",
+    marginBottom: "50px",
+    border: "1px solid #eee",
+    fontSize: "15px",
+    color: "#555",
+  },
   backButton: {
     marginBottom: "20px",
     padding: "8px 16px",

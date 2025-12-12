@@ -1,15 +1,16 @@
 // src/components/ReviewSection.js
 
 import React, { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom"; // 로그인 페이지 이동을 위한 Link 추가
 import { useAuth } from "../context/AuthContext";
 import { REVIEW_API_URL, USER_API_URL } from "../constants";
 import { styles } from "../styles";
 
-// [추가] 프로필 이미지 에러 처리를 위한 헬퍼 컴포넌트
+// [헬퍼 컴포넌트] 프로필 이미지 에러 처리
+// 이미지가 없거나 로딩 실패 시 기본 아이콘(👤)을 보여줍니다.
 const ProfileAvatar = ({ src }) => {
     const [error, setError] = useState(false);
 
-    // src가 없거나 로딩 중 에러가 발생하면 기본 아이콘 표시
     if (!src || error) {
         return <span style={{ fontSize: "16px" }}>👤</span>;
     }
@@ -19,20 +20,24 @@ const ProfileAvatar = ({ src }) => {
             src={src}
             alt="profile"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            onError={() => setError(true)} // 이미지 로드 실패 시 에러 상태 true
+            onError={() => setError(true)}
         />
     );
 };
 
 const ReviewSection = ({ animeId }) => {
     const { user } = useAuth();
+    
     const [reviews, setReviews] = useState([]);
-    const [userImages, setUserImages] = useState({});
+    const [userImages, setUserImages] = useState({}); // 유저 ID: 프로필이미지 매핑
     const [loading, setLoading] = useState(true);
+    
+    // 리뷰 작성 폼 상태
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
     const [rating, setRating] = useState(10);
 
+    // 전체 유저 정보를 가져와서 { userid: profileImage } 형태의 맵(Map) 생성
     const fetchUserImages = async () => {
         try {
             const res = await fetch(USER_API_URL);
@@ -47,6 +52,7 @@ const ReviewSection = ({ animeId }) => {
         }
     };
 
+    // 해당 애니메이션의 리뷰 목록 가져오기
     const fetchReviews = useCallback(async () => {
         try {
             const res = await fetch(REVIEW_API_URL);
@@ -54,7 +60,7 @@ const ReviewSection = ({ animeId }) => {
             const filtered = data.filter(
                 (r) => String(r.animeId) === String(animeId)
             );
-            setReviews(filtered.sort((a, b) => b.time - a.time));
+            setReviews(filtered.sort((a, b) => b.time - a.time)); // 최신순 정렬
         } catch (err) {
             console.error("리뷰 로드 오류:", err);
         } finally {
@@ -67,10 +73,12 @@ const ReviewSection = ({ animeId }) => {
         fetchUserImages();
     }, [fetchReviews]);
 
+    // 리뷰 등록 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!title || !contents) return alert("제목과 내용을 입력해주세요.");
         
+        // 이미 리뷰를 썼는지 확인
         if (reviews.some(r => r.userid === user.userid)) {
             return alert("이미 이 애니메이션에 대한 리뷰를 작성하셨습니다.");
         }
@@ -94,13 +102,14 @@ const ReviewSection = ({ animeId }) => {
                 setTitle("");
                 setContents("");
                 setRating(10);
-                fetchReviews();
+                fetchReviews(); // 목록 갱신
             } else alert("등록 실패");
         } catch (err) {
             console.error("리뷰 등록 오류:", err);
         }
     };
 
+    // 리뷰 삭제 핸들러
     const handleDelete = async (reviewId) => {
         if (!window.confirm("정말로 이 리뷰를 삭제하시겠습니까?")) return;
         try {
@@ -124,7 +133,9 @@ const ReviewSection = ({ animeId }) => {
             <h2 style={{ borderBottom: "2px solid #333", paddingBottom: "10px", marginBottom: "20px" }}>
                 💬 유저 리뷰 ({reviews.length})
             </h2>
+            
             {user ? (
+                // 로그인 상태: 리뷰 작성 폼 표시
                 <form onSubmit={handleSubmit} style={styles.reviewForm}>
                     <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
                         <input
@@ -157,12 +168,25 @@ const ReviewSection = ({ animeId }) => {
                     </button>
                 </form>
             ) : (
+                // 비로그인 상태: 로그인 안내 메시지 (링크 포함)
                 <div style={styles.loginMessage}>
                     리뷰를 작성하려면{" "}
-                    <span style={{ fontWeight: "bold", color: "#6366f1" }}>로그인</span>이
-                    필요합니다.
+                    <Link 
+                        to="/login" 
+                        style={{ 
+                            fontWeight: "bold", 
+                            color: "#6366f1", 
+                            textDecoration: "underline",
+                            cursor: "pointer"
+                        }}
+                    >
+                        로그인
+                    </Link>
+                    이 필요합니다.
                 </div>
             )}
+
+            {/* 리뷰 목록 표시 */}
             <div style={styles.reviewList}>
                 {loading ? (
                     <div>로딩 중...</div>
@@ -174,18 +198,18 @@ const ReviewSection = ({ animeId }) => {
                     reviews.map((review) => (
                         <div key={review.id} style={styles.reviewItem}>
                             <div style={styles.reviewHeader}>
-                                <div
-                                    style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                                >
+                                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                    
+                                    {/* 프로필 이미지 (ProfileAvatar 사용) */}
                                     <div style={{
                                         width: "32px", height: "32px", borderRadius: "50%", 
                                         backgroundColor: "#eee", overflow: "hidden", 
                                         display: "flex", alignItems: "center", justifyContent: "center",
                                         border: "1px solid #ddd"
                                     }}>
-                                        {/* [수정] 헬퍼 컴포넌트 사용 */}
                                         <ProfileAvatar src={userImages[review.userid]} />
                                     </div>
+
                                     <div>
                                         <span style={{ fontSize: "14px", color: "#555", display: "block", lineHeight: "1" }}>
                                             {review.userid}
@@ -194,6 +218,8 @@ const ReviewSection = ({ animeId }) => {
                                     </div>
                                     <span style={styles.reviewRating}>⭐ {review.rating}</span>
                                 </div>
+                                
+                                {/* 본인 글 삭제 버튼 */}
                                 {user && user.userid === review.userid && (
                                     <button
                                         onClick={() => handleDelete(review.id)}
