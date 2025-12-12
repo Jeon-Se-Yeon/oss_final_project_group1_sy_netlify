@@ -1,10 +1,17 @@
+// src/styles.js
+
 export const styles = {
+  // --- 레이아웃 공통 ---
   container: {
     maxWidth: "1000px",
     margin: "0 auto",
     padding: "20px",
-    fontFamily: "sans-serif",
+    fontFamily: "'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif",
+    boxSizing: "border-box", // 패딩이 너비에 포함되도록 설정
+    width: "100%",
   },
+  
+  // --- 헤더 ---
   header: {
     marginBottom: "30px",
     borderBottom: "1px solid #eee",
@@ -14,118 +21,169 @@ export const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: "wrap", // 모바일에서 줄바꿈 허용
+    gap: "15px",      // 줄바꿈 시 간격
   },
+  authSection: { 
+    display: "flex", 
+    alignItems: "center", 
+    gap: "10px",
+    flexWrap: "wrap",
+  },
+
+  // --- 로그인/회원가입 카드 ---
   authCard: {
     maxWidth: "400px",
+    width: "100%", // 모바일 대응
     margin: "80px auto",
-    padding: "40px",
+    padding: "30px",
     border: "1px solid #eee",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    borderRadius: "16px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.05)",
+    backgroundColor: "white",
+    boxSizing: "border-box",
   },
   formCol: { display: "flex", flexDirection: "column", gap: "15px" },
-  searchBox: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "30px",
-  },
-  formColumn: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    width: "100%",
-    maxWidth: "600px",
-  },
-  formRow: { display: "flex", gap: "10px", width: "100%" },
-  filterRow: { display: "flex", gap: "10px", width: "100%" },
-  input: {
-    padding: "12px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ddd",
-    flex: 1,
-  },
-  select: {
-    padding: "12px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ddd",
-    flex: 1,
-    backgroundColor: "white",
-    cursor: "pointer",
-  },
-  primaryButton: {
-    padding: "12px 20px",
-    backgroundColor: "#6366f1",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-  secondaryButton: {
-    padding: "12px 20px",
-    backgroundColor: "#10b981",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  },
-  navButton: {
-    padding: "8px 16px",
-    backgroundColor: "#333",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  navButtonOutline: {
-    padding: "8px 16px",
-    backgroundColor: "white",
-    color: "#333",
-    border: "1px solid #333",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  logoutButton: {
-    padding: "8px 16px",
-    backgroundColor: "#e5e7eb",
-    color: "#333",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  backButton: {
-    marginBottom: "20px",
-    padding: "8px 16px",
-    backgroundColor: "#f0f0f0",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
   linkText: {
     marginTop: "20px",
     textAlign: "center",
     fontSize: "14px",
     color: "#666",
   },
-  authSection: { display: "flex", alignItems: "center", gap: "10px" },
+
+  // --- 검색 및 필터 영역 ---
+  searchBox: {
+    marginBottom: "30px",
+    width: "100%",
+  },
+  formColumn: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    width: "100%",
+    maxWidth: "800px", // 검색창 최대 너비 늘림
+    margin: "0 auto",
+  },
+  formRow: { 
+    display: "flex", 
+    gap: "10px", 
+    width: "100%",
+    flexWrap: "wrap", // 모바일에서 버튼이 아래로 내려갈 수 있게
+  },
+  filterRow: { 
+    display: "flex", 
+    gap: "10px", 
+    width: "100%", 
+    flexWrap: "wrap", // 모바일에서 필터들이 줄바꿈되게
+  },
+  
+  // --- 입력 요소 공통 ---
+  input: {
+    padding: "12px 15px",
+    fontSize: "16px",
+    borderRadius: "8px",
+    border: "1px solid #ddd",
+    flex: 1, // 남은 공간 채우기
+    minWidth: "200px", // 너무 작아지지 않게 방지
+    outline: "none",
+    transition: "border-color 0.2s",
+  },
+  select: {
+    padding: "12px 15px",
+    fontSize: "15px",
+    borderRadius: "8px",
+    border: "1px solid #ddd",
+    flex: 1,
+    minWidth: "120px",
+    backgroundColor: "white",
+    cursor: "pointer",
+    outline: "none",
+  },
+
+  // --- 버튼 스타일 ---
+  primaryButton: {
+    padding: "12px 24px",
+    backgroundColor: "#6366f1",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    fontSize: "15px",
+    transition: "background 0.2s",
+    whiteSpace: "nowrap", // 텍스트 줄바꿈 방지
+  },
+  secondaryButton: {
+    padding: "12px 24px",
+    backgroundColor: "#10b981",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    fontSize: "15px",
+  },
+  navButton: {
+    padding: "8px 16px",
+    backgroundColor: "#333",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  navButtonOutline: {
+    padding: "8px 16px",
+    backgroundColor: "white",
+    color: "#333",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  logoutButton: {
+    padding: "8px 16px",
+    backgroundColor: "#f3f4f6",
+    color: "#4b5563",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontSize: "13px",
+    fontWeight: "600",
+  },
+  backButton: {
+    marginBottom: "20px",
+    padding: "8px 16px",
+    backgroundColor: "white",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+    cursor: "pointer",
+    display: "inline-block",
+  },
+  
+  // --- 메인 리스트 (Grid) ---
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+    // 화면 크기에 따라 자동으로 열 개수 조절 (최소 160px)
+    gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", 
     gap: "20px",
+    paddingBottom: "40px",
   },
   card: {
     border: "1px solid #eee",
     borderRadius: "12px",
     overflow: "hidden",
     height: "100%",
+    backgroundColor: "white",
     cursor: "pointer",
-    transition: "transform 0.2s",
-    "&:hover": { transform: "translateY(-5px)" },
+    transition: "transform 0.2s, box-shadow 0.2s",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
   },
-  image: { width: "100%", height: "280px", objectFit: "cover" },
+  image: { 
+    width: "100%", 
+    height: "240px", // 높이 약간 줄임
+    objectFit: "cover" 
+  },
   content: { padding: "12px" },
   centerText: {
     textAlign: "center",
@@ -133,45 +191,48 @@ export const styles = {
     fontSize: "1.2rem",
     color: "#666",
   },
+
+  // --- 페이지네이션 ---
   paginationWrapper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     gap: "15px",
-    marginTop: "40px",
-    paddingBottom: "20px",
+    marginTop: "20px",
+    paddingBottom: "40px",
   },
   paginationBtnRow: {
     display: "flex",
-    gap: "5px",
+    gap: "6px",
     flexWrap: "wrap",
     justifyContent: "center",
   },
   squareBtn: {
-    minWidth: "32px",
-    height: "32px",
+    minWidth: "36px", // 터치하기 좋게 조금 키움
+    height: "36px",
     padding: "0 6px",
     backgroundColor: "white",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    color: "#333",
+    border: "1px solid #eee",
+    borderRadius: "6px",
+    color: "#555",
     cursor: "pointer",
-    fontSize: "13px",
+    fontSize: "14px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    transition: "all 0.2s",
   },
   activeSquareBtn: {
-    minWidth: "32px",
-    height: "32px",
+    minWidth: "36px",
+    height: "36px",
     padding: "0 6px",
-    backgroundColor: "white",
-    border: "1px solid #f97316",
-    borderRadius: "4px",
-    color: "#f97316",
+    backgroundColor: "#6366f1", // 포인트 컬러
+    border: "1px solid #6366f1",
+    borderRadius: "6px",
+    color: "white",
     fontWeight: "bold",
     cursor: "pointer",
-    fontSize: "13px",
+    fontSize: "14px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -201,11 +262,13 @@ export const styles = {
     cursor: "pointer",
     fontSize: "12px",
   },
+
+  // --- 상세 페이지 (Detail) ---
   detailCard: {
     backgroundColor: "white",
     borderRadius: "16px",
-    padding: "40px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+    padding: "30px", // 패딩 조정
+    boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
     marginBottom: "40px",
   },
   detailHeader: {
@@ -213,37 +276,51 @@ export const styles = {
     paddingBottom: "20px",
     marginBottom: "30px",
   },
-  detailBody: { display: "flex", gap: "40px", flexWrap: "wrap" },
-  imageWrapper: { flexShrink: 0 },
-  detailImage: {
-    width: "320px",
-    borderRadius: "12px",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+  detailBody: { 
+    display: "flex", 
+    gap: "30px", 
+    flexWrap: "wrap", // [중요] 모바일에서 이미지가 위로 가고 텍스트가 아래로 가도록 설정
+    justifyContent: "center", // 모바일에서 가운데 정렬
   },
-  detailInfo: { flex: 1, minWidth: "300px" },
+  imageWrapper: { 
+    flexShrink: 0,
+    display: "flex",
+    justifyContent: "center",
+  },
+  detailImage: {
+    width: "100%",
+    maxWidth: "300px", // 너무 커지지 않게 제한
+    borderRadius: "12px",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+  },
+  detailInfo: { 
+    flex: 1, 
+    minWidth: "280px", // 너무 좁아지면 줄바꿈 유도
+  },
   tagContainer: {
     display: "flex",
     flexWrap: "wrap",
-    gap: "10px",
-    marginBottom: "25px",
+    gap: "8px",
+    marginBottom: "20px",
   },
   badge: {
-    backgroundColor: "#f3f4f6",
-    padding: "8px 14px",
+    backgroundColor: "#eff6ff",
+    padding: "6px 12px",
     borderRadius: "20px",
-    fontSize: "14px",
-    color: "#374151",
+    fontSize: "13px",
+    color: "#2563eb",
     fontWeight: "600",
-    border: "1px solid #e5e7eb",
+    border: "1px solid #dbeafe",
   },
   synopsis: {
-    lineHeight: "1.8",
-    color: "#4b5563",
+    lineHeight: "1.7",
+    color: "#374151",
     backgroundColor: "#f9fafb",
     padding: "20px",
     borderRadius: "12px",
     marginBottom: "25px",
     fontSize: "15px",
+    wordBreak: "keep-all", // 한글 줄바꿈 최적화
   },
   linkButton: {
     display: "inline-block",
@@ -254,109 +331,120 @@ export const styles = {
     textDecoration: "none",
     fontWeight: "bold",
     transition: "background 0.2s",
+    textAlign: "center",
   },
   videoContainer: { marginTop: "50px" },
+
+  // --- 리뷰 섹션 ---
   reviewContainer: {
     backgroundColor: "white",
     borderRadius: "16px",
     padding: "30px",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.03)",
     marginTop: "20px",
+    border: "1px solid #eee",
   },
   reviewForm: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#f8fafc",
     padding: "20px",
     borderRadius: "12px",
     marginBottom: "30px",
+    border: "1px solid #f1f5f9",
   },
   textarea: {
     width: "100%",
-    padding: "12px",
-    borderRadius: "6px",
+    padding: "15px",
+    borderRadius: "8px",
     border: "1px solid #ddd",
     marginTop: "10px",
-    fontSize: "14px",
+    fontSize: "15px",
     boxSizing: "border-box",
+    resize: "vertical", // 세로로만 리사이즈 허용
+    fontFamily: "inherit",
   },
   reviewButton: {
     marginTop: "10px",
-    padding: "10px 20px",
+    padding: "12px 24px",
     backgroundColor: "#333",
     color: "white",
     border: "none",
     borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "bold",
-  },
-  loginMessage: {
-    textAlign: "center",
-    padding: "30px",
-    backgroundColor: "#f3f4f6",
-    borderRadius: "12px",
-    marginBottom: "30px",
+    width: "100%", // 모바일에서 버튼 꽉 채우기
+    maxWidth: "150px", // 데스크탑에선 적당히
   },
   reviewList: { display: "flex", flexDirection: "column", gap: "15px" },
-  reviewItem: { borderBottom: "1px solid #eee", paddingBottom: "15px" },
+  reviewItem: { 
+    borderBottom: "1px solid #f1f5f9", 
+    paddingBottom: "20px",
+    marginBottom: "5px"
+  },
   reviewHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "8px",
+    marginBottom: "10px",
+    flexWrap: "wrap", // 내용 길어지면 줄바꿈
+    gap: "10px",
   },
-  reviewTitle: { fontWeight: "bold", fontSize: "16px" },
-  reviewRating: { color: "#f59e0b", fontWeight: "bold" },
-  reviewContent: { color: "#444", lineHeight: "1.5", marginBottom: "8px" },
+  reviewTitle: { fontWeight: "bold", fontSize: "16px", color: "#1f2937" },
+  reviewRating: { color: "#f59e0b", fontWeight: "bold", fontSize: "14px" },
+  reviewContent: { color: "#4b5563", lineHeight: "1.6", marginBottom: "12px" },
   reviewFooter: {
     fontSize: "12px",
-    color: "#888",
+    color: "#9ca3af",
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
   },
-  deleteButton: {
-    backgroundColor: "#ef4444",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "4px",
-    fontSize: "12px",
-    cursor: "pointer",
-  },
+
+  // --- 마이페이지 ---
   myPageSection: {
     marginBottom: "30px",
+    padding: "30px",
+    border: "1px solid #eee",
+    borderRadius: "16px",
+    backgroundColor: "white",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+  },
+  myReviewItem: {
     padding: "20px",
     border: "1px solid #eee",
     borderRadius: "12px",
-    backgroundColor: "#f9f9f9",
-  },
-  myReviewItem: {
-    padding: "15px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    marginBottom: "10px",
+    marginBottom: "15px",
     backgroundColor: "white",
+    transition: "transform 0.2s",
   },
   reviewTitleLink: {
     textDecoration: "none",
     color: "#6366f1",
     fontWeight: "bold",
     fontSize: "1.1rem",
-    "&:hover": { textDecoration: "underline" },
+    display: "block",
+    marginBottom: "5px",
   },
   myReviewHeader: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "5px",
+    alignItems: "flex-start",
+    marginBottom: "10px",
+    flexWrap: "wrap",
+    gap: "10px",
   },
   myReviewBody: {
-    color: "#666",
-    marginTop: "5px",
+    color: "#555",
+    marginTop: "10px",
+    lineHeight: "1.6",
+    backgroundColor: "#f9f9f9",
+    padding: "15px",
+    borderRadius: "8px",
   },
   myReviewFooter: {
     display: "flex",
     justifyContent: "flex-end",
-    fontSize: "0.8rem",
-    color: "#888",
-    marginTop: "10px",
+    fontSize: "0.85rem",
+    color: "#999",
+    marginTop: "15px",
   },
 };
