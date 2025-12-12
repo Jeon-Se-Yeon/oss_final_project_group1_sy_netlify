@@ -11,7 +11,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState(null);
 
-  // [핵심 변경 1] URL 쿼리 파라미터 관리 훅 사용
   const [searchParams, setSearchParams] = useSearchParams();
 
   // URL에서 현재 상태 값 읽어오기 (없으면 기본값 사용)
@@ -67,30 +66,25 @@ const Home = () => {
         setLoading(false);
       }
     },
-    [page, query, genre, rating, sort] // 의존성 배열에 URL 파라미터들 추가
+    [page, query, genre, rating, sort]
   );
 
-  // [핵심 변경 2] URL 파라미터(searchParams)가 변할 때마다 데이터 fetch
   useEffect(() => {
     fetchAnime();
   }, [fetchAnime]);
 
-  // 초기화 (URL 파라미터 제거)
   const resetHome = () => {
     setSearchInput("");
-    setSearchParams({}); // URL 쿼리 전체 삭제
+    setSearchParams({});
   };
 
-  // [핵심 변경 3] 상태 변경 시 URL 업데이트 함수들
   const updateParams = (newParams) => {
-    // 기존 파라미터 유지하면서 새로운 값 덮어쓰기
     const currentParams = Object.fromEntries(searchParams);
     setSearchParams({ ...currentParams, ...newParams });
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // 검색 시 페이지는 1로 초기화
     setSearchParams({
       q: searchInput,
       page: 1,
@@ -101,12 +95,10 @@ const Home = () => {
   };
 
   const handleFilterChange = (key, value) => {
-    // 필터 변경 시 페이지 1로 리셋하며 URL 업데이트
     updateParams({ [key]: value, page: 1 });
   };
 
   const handlePageChange = (newPage) => {
-    // 페이지 변경 시 URL 업데이트 (기존 필터 유지)
     updateParams({ page: newPage });
     window.scrollTo(0, 0);
   };
@@ -153,13 +145,12 @@ const Home = () => {
           </div>
 
           <div style={styles.filterRow}>
-            {/* value에 URL에서 가져온 상태(genre, rating, sort) 연결 */}
             <select
               style={styles.select}
               value={genre}
               onChange={(e) => handleFilterChange("genre", e.target.value)}
             >
-              <option value="">🎭 모든 장르</option>
+              <option value="">모든 장르</option>
               {GENRES.map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.name}
@@ -171,7 +162,7 @@ const Home = () => {
               value={rating}
               onChange={(e) => handleFilterChange("rating", e.target.value)}
             >
-              <option value="">🔞 모든 연령</option>
+              <option value="">모든 연령</option>
               {RATINGS.map((r) => (
                 <option key={r.value} value={r.value}>
                   {r.name}
@@ -193,7 +184,7 @@ const Home = () => {
       </div>
 
       {loading ? (
-        <div style={styles.centerText}>로딩 중... 🌀</div>
+        <div style={styles.centerText}>로딩 중...</div>
       ) : (
         <div style={styles.grid}>
           {animeList.map((anime) => (
