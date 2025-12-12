@@ -373,6 +373,17 @@ export const styles = {
     marginBottom: "30px",
     border: "1px solid #f1f5f9",
   },
+  reviewFormRow: {
+    display: "flex",
+    gap: "10px",
+    marginBottom: "10px",
+    flexWrap: "wrap",
+  },
+  reviewBtnRow: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: "10px",
+  },
   textarea: {
     width: "100%",
     padding: "15px",
