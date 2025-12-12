@@ -184,9 +184,9 @@ const Home = () => {
               value={sort}
               onChange={(e) => handleFilterChange("sort", e.target.value)}
             >
-              <option value="">🏆 기본순 (인기)</option>
-              <option value="title">🅰️ 제목순 (A-Z)</option>
-              <option value="score">⭐ 별점순 (높은순)</option>
+              <option value="">기본순 (인기)</option>
+              <option value="title">제목순 (A-Z)</option>
+              <option value="score">별점순 (높은순)</option>
             </select>
           </div>
         </form>
