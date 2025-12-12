@@ -1,7 +1,28 @@
+// src/components/ReviewSection.js
+
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { REVIEW_API_URL, USER_API_URL } from "../constants";
 import { styles } from "../styles";
+
+// [추가] 프로필 이미지 에러 처리를 위한 헬퍼 컴포넌트
+const ProfileAvatar = ({ src }) => {
+    const [error, setError] = useState(false);
+
+    // src가 없거나 로딩 중 에러가 발생하면 기본 아이콘 표시
+    if (!src || error) {
+        return <span style={{ fontSize: "16px" }}>👤</span>;
+    }
+
+    return (
+        <img
+            src={src}
+            alt="profile"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            onError={() => setError(true)} // 이미지 로드 실패 시 에러 상태 true
+        />
+    );
+};
 
 const ReviewSection = ({ animeId }) => {
     const { user } = useAuth();
@@ -162,16 +183,8 @@ const ReviewSection = ({ animeId }) => {
                                         display: "flex", alignItems: "center", justifyContent: "center",
                                         border: "1px solid #ddd"
                                     }}>
-                                        {userImages[review.userid] ? (
-                                            <img 
-                                                src={userImages[review.userid]} 
-                                                alt="profile" 
-                                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                                onError={(e) => {e.target.style.display='none'}}
-                                            />
-                                        ) : (
-                                            <span style={{ fontSize: "16px" }}>👤</span>
-                                        )}
+                                        {/* [수정] 헬퍼 컴포넌트 사용 */}
+                                        <ProfileAvatar src={userImages[review.userid]} />
                                     </div>
                                     <div>
                                         <span style={{ fontSize: "14px", color: "#555", display: "block", lineHeight: "1" }}>
